@@ -17,7 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.BUILD-SNAPSHOT</spring-cloud.version>
-		<docker.image>demo/services-b</docker.image>
+		<docker.image>demo/service-b</docker.image>
 	</properties>
 
 	<dependencies>

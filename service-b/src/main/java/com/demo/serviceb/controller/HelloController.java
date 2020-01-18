@@ -32,4 +32,5 @@ public class HelloController {
     public String getConfigSample(){
         return "sample: " + configSample;
     }
+
 }

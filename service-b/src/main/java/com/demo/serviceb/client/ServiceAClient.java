@@ -9,4 +9,6 @@ public interface ServiceAClient {
     @GetMapping("/hello")
     public String hello();
 
+    @GetMapping("info")
+    public String getInfo();
 }

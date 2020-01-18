@@ -2,25 +2,25 @@
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: service-a
+  name: service-config
   namespace: default
   labels:
-    k8s-app: service-a
+    k8s-app: service-config
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: service-a
+      k8s-app: service-config
   template:
     metadata:
-      name: service-a
+      name: service-config
       creationTimestamp: 
       labels:
-        k8s-app: service-a
+        k8s-app: service-config
     spec:
       containers:
-      - name: service-a
-        image: demo/service-a
+      - name: service-config
+        image: demo/service-config
         env:
         - name: JAVA_OPTS
           value: "-Dspring.cloud.config.uri=http://service-config:8888"
@@ -36,17 +36,17 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: service-a
+  name: service-config
   namespace: default
   labels:
-    k8s-app: service-a
+    k8s-app: service-config
 spec:
   ports:
-  - name: service-a
+  - name: service-config
     protocol: TCP
-    port: 80
-    targetPort: 8080
-    nodePort: 30002
+    port: 8888
+    targetPort: 8888
+    nodePort: 30001
   selector:
-    k8s-app: service-a
+    k8s-app: service-config
   type: NodePort

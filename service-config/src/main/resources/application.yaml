@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/JasperJiang/SpringCloudOnK8s_Config.git
+          searchPaths: '{application}'
+          username: jasper-jiang
+          password: '{cipher}25340e841a38661c4ec7a7bc182333ee40bffbba16d5e25dd3d68f9e2a79b4b8eb2b3c6dda8848c5a4a0c606737c2bef15c8a6d3b4c37a350ebb6a210be259e4'
+
+server:
+  port: 8888

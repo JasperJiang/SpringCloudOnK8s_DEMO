@@ -1,0 +1,72 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: service-self-healing
+  namespace: default
+  labels:
+    k8s-app: service-self-healing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: service-self-healing
+  template:
+    metadata:
+      name: service-self-healing
+      creationTimestamp: 
+      labels:
+        k8s-app: service-self-healing
+    spec:
+      containers:
+      - name: service-self-healing
+        image: demo/service-self-healing
+        env:
+        - name: JAVA_OPTS
+          value: "-Dspring.cloud.config.uri=http://service-config:8888"
+        resources: {}
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: "/actuator/health"
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 20
+          timeoutSeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: "/actuator/health"
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 10
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-self-healing
+  namespace: default
+  labels:
+    k8s-app: service-self-healing
+spec:
+  ports:
+  - name: service-self-healing
+    protocol: TCP
+    port: 80
+    targetPort: 8080
+    nodePort: 30004
+  selector:
+    k8s-app: service-self-healing
+  type: NodePort

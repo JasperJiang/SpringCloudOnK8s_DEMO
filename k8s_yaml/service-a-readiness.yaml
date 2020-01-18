@@ -26,6 +26,26 @@ spec:
           value: "-Dspring.cloud.config.uri=http://service-config:8888"
         resources: {}
         imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: "/actuator/health"
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 20
+          timeoutSeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: "/actuator/health"
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 10
       restartPolicy: Always
   strategy:
     type: RollingUpdate

@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.BUILD-SNAPSHOT</spring-cloud.version>
+        <docker.image>demo/services-a</docker.image>
     </properties>
 
     <dependencies>
@@ -72,6 +73,27 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.11</version>
+                <configuration>
+                    <forceTags>true</forceTags>
+                    <imageName>${docker.image}</imageName>
+                    <imageTags>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
